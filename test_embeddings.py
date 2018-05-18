@@ -43,14 +43,16 @@ if __name__ == '__main__':
     print("%s sec." % (time() - t0))
     print_evaluation(X, Y_dissimilarity)
 
+    print("")
     print("Fastmap:")
-    distance = euclidean_distance
-    # distance = euclidean_distance_parallel
+    # distance = euclidean_distance
+    distance = euclidean_distance_parallel
     t0 = time()
     Y_fastmap = fastmap(X, distance, k)
     print("%s sec." % (time() - t0))
     print_evaluation(X, Y_fastmap)
 
+    print("")
     print("lMDS:")
     distance = euclidean_distance
     # distance = euclidean_distance_parallel
