@@ -1,3 +1,6 @@
+"""Metrics to evaluate the quality of an embedding.
+"""
+
 import numpy as np
 from scipy.stats.stats import pearsonr
 
@@ -27,9 +30,9 @@ def distortion(dist_embedd, dist_original):
 
 
 if __name__ == '__main__':
-    dist_original = np.arange(1, 100)
+    dist_original = np.arange(1, 20)
     dist_embedd = dist_original ** 2 + np.random.normal(len(dist_original)) * 0.5
-    print(stress(dist_embedd, dist_original))
-    print(correlation_distance(dist_embedd, dist_original))
-    print(distortion(dist_embedd, dist_original))
+    print("stress = %s" % stress(dist_embedd, dist_original))
+    print("correlation_distance = %s" % correlation_distance(dist_embedd, dist_original))
+    print("distortion = %s" % distortion(dist_embedd, dist_original))
     
