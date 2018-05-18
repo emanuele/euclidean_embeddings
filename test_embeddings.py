@@ -38,15 +38,15 @@ if __name__ == '__main__':
     t0 = time()
     Y_dissimilarity, prototype_idx = compute_dissimilarity(X, num_prototypes=k,
                                                            distance=distance,
-                                                           prototype_policy='fft',
+                                                           prototype_policy='sff',
                                                            verbose=False)
     print("%s sec." % (time() - t0))
     print_evaluation(X, Y_dissimilarity)
 
     print("")
     print("Fastmap:")
-    # distance = euclidean_distance
-    distance = euclidean_distance_parallel
+    distance = euclidean_distance
+    # distance = euclidean_distance_parallel
     t0 = time()
     Y_fastmap = fastmap(X, distance, k)
     print("%s sec." % (time() - t0))
