@@ -24,7 +24,7 @@ def parallel_distance_computation(A, B, distance, n_jobs=-1, granularity=2, verb
     with the same signature as the distance function. Example:
     distance_parallel = functools.partial(parallel_distance_computation, distance=distance)
     """
-    if joblib_available and n_jobs != 1:
+    if joblib_available and n_jobs != 1 and len(A) > 1000:
         if n_jobs is None or n_jobs == -1:
             n_jobs = cpu_count()
 
