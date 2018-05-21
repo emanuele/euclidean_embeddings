@@ -10,6 +10,7 @@ the Dissimilarity Projection, http://dx.doi.org/10.1109/PRNI.2012.13
 from __future__ import division
 import numpy as np
 from dipy.tracking.distances import bundles_distances_mam
+from subsampling import compute_subset
 try:
     from joblib import Parallel, delayed, cpu_count
     joblib_available = True
@@ -182,23 +183,6 @@ def dissimilarity(tracks, prototypes, distance=bundles_distances_mam,
     return dissimilarity_matrix
 
 
-def compute_prototypes(tracks, num_prototypes, distance, prototype_policy='sff'):
-    if prototype_policy == 'random':
-        prototype_idx = np.random.permutation(len(tracks))[:num_prototypes]
-    elif prototype_policy == 'fft':
-        prototype_idx = furthest_first_traversal(tracks,
-                                                 num_prototypes, distance)
-    elif prototype_policy == 'sff':
-        prototype_idx = subset_furthest_first(tracks, num_prototypes, distance)
-    else:
-        if verbose:
-            print("Prototype selection policy not supported: %s" % prototype_policy)
-
-        raise Exception
-
-    return prototype_idx
-
-
 def compute_dissimilarity(tracks, num_prototypes=40,
                           distance=bundles_distances_mam,
                           prototype_policy='sff',
@@ -242,8 +226,8 @@ def compute_dissimilarity(tracks, num_prototypes=40,
     if verbose:
         print("Generating %s prototypes with policy %s." % (num_prototypes, prototype_policy))
 
-    prototype_idx = compute_prototypes(tracks, num_prototypes, distance,
-                                        prototype_policy=prototype_policy)
+    prototype_idx = compute_subset(tracks, num_prototypes, distance,
+                                   landmark_policy=prototype_policy)
     prototypes = [tracks[i] for i in prototype_idx]
     dissimilarity_matrix = dissimilarity(tracks, prototypes, distance,
                                          n_jobs=n_jobs, verbose=verbose)

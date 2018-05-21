@@ -20,16 +20,16 @@ eigenvalues, dimention of embedded space in this case is n' < n
 """
 
 import numpy as np
-from dissimilarity import compute_prototypes
+from subsampling import compute_subset
 
 
 def compute_lmds(dataset, distance=None, nl=10, k=4, landmark_policy='random'):
     """Given a dataset, computes the lMDS Euclidean embedding of size k
     using nl landmarks. The dataset must be an array.
     """
-    landmarks_idx = compute_prototypes(dataset, num_prototypes=nl,
-                                       distance=distance,
-                                       prototype_policy=landmark_policy)
+    landmarks_idx = compute_subset(dataset, num_landmarks=nl,
+                                   distance=distance,
+                                   landmark_policy=landmark_policy)
 
     d = distance(dataset, dataset[landmarks_idx])
 
