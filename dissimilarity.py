@@ -9,7 +9,6 @@ the Dissimilarity Projection, http://dx.doi.org/10.1109/PRNI.2012.13
 
 from __future__ import division
 import numpy as np
-from dipy.tracking.distances import bundles_distances_mam
 from subsampling import compute_subset
 try:
     from joblib import Parallel, delayed, cpu_count
@@ -122,8 +121,8 @@ def subset_furthest_first(tracks, k, distance, permutation=True, c=2.0):
                                         permutation=False)]
 
 
-def dissimilarity(tracks, prototypes, distance=bundles_distances_mam,
-                  n_jobs=-1, verbose=False):
+def dissimilarity(tracks, prototypes, distance, n_jobs=-1,
+                  verbose=False):
     """Compute the dissimilarity (distance) matrix between tracks and
     given prototypes. This function supports parallel (multicore)
     computation.
@@ -183,10 +182,8 @@ def dissimilarity(tracks, prototypes, distance=bundles_distances_mam,
     return dissimilarity_matrix
 
 
-def compute_dissimilarity(tracks, num_prototypes=40,
-                          distance=bundles_distances_mam,
-                          prototype_policy='sff',
-                          n_jobs=-1,
+def compute_dissimilarity(tracks, num_prototypes=40, distance=None,
+                          prototype_policy='sff', n_jobs=-1,
                           verbose=False):
     """Compute the dissimilarity (distance) matrix between tracks and
     prototypes, where prototypes are selected among the tracks with a
@@ -229,6 +226,6 @@ def compute_dissimilarity(tracks, num_prototypes=40,
     prototype_idx = compute_subset(tracks, num_prototypes, distance,
                                    landmark_policy=prototype_policy)
     prototypes = [tracks[i] for i in prototype_idx]
-    dissimilarity_matrix = dissimilarity(tracks, prototypes, distance,
-                                         n_jobs=n_jobs, verbose=verbose)
+    dissimilarity_matrix = distance(tracks, prototypes, n_jobs=n_jobs,
+                                    verbose=verbose)
     return dissimilarity_matrix, prototype_idx
