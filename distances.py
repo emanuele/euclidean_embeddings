@@ -15,7 +15,9 @@ def euclidean_distance(A, B):
     return distance_matrix(np.atleast_2d(A), np.atleast_2d(B), p=2)
 
 
-def parallel_distance_computation(A, B, distance, n_jobs=-1, granularity=2, verbose=False):
+def parallel_distance_computation(A, B, distance, n_jobs=-1,
+                                  granularity=2, verbose=False,
+                                  job_size_min=1000):
     """Computes the distance matrix between all objects in A and all
     objects in B in parallel over all cores.
 
@@ -24,7 +26,7 @@ def parallel_distance_computation(A, B, distance, n_jobs=-1, granularity=2, verb
     with the same signature as the distance function. Example:
     distance_parallel = functools.partial(parallel_distance_computation, distance=distance)
     """
-    if joblib_available and n_jobs != 1 and len(A) > 1000:
+    if joblib_available and n_jobs != 1 and len(A) > job_size_min:
         if n_jobs is None or n_jobs == -1:
             n_jobs = cpu_count()
 
