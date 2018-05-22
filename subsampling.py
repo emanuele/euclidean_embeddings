@@ -9,24 +9,25 @@ import numpy as np
 
 def furthest_first_traversal(dataset, k, distance, permutation=True):
     """This is the farthest first traversal (fft) algorithm which selects
-    k objects out of a list/array of objects (dataset). This
-    algorithms is known to be a good sub-optimal solution to the
-    k-center problem, i.e. the k objects are sequentially selected in
-    order to be far away from each other.
+    k objects out of an array of objects (dataset). This algorithms is
+    known to be a good sub-optimal solution to the k-center problem,
+    i.e. the k objects are sequentially selected in order to be far
+    away from each other.
 
     Parameters
     ----------
 
-    dataset : list or array of objects
-        an iterable of objects.
+    dataset : array of objects
+        an iterable of objects which supports advanced indexing.
     k : int
         the number of objects to select.
     distance : function
-        a distance function between groups of objects, that given two
-        groups as input returns the distance matrix.
+        a distance function between two objects or groups of objects,
+        that given two groups as input returns the distance or distance
+        matrix.
     permutation : bool
         True if you want to shuffle the objects first. No
-        side-effect on the input objects.
+        side-effect on the input dataset.
 
     Return
     ------
@@ -62,8 +63,8 @@ def furthest_first_traversal(dataset, k, distance, permutation=True):
 def subset_furthest_first(dataset, k, distance, permutation=True, c=2.0):
     """The subset furthest first (sff) algorithm is a stochastic
     version of the furthest first traversal (fft) algorithm. Sff
-    scales well on large set of objects (objects) because it
-    does not depend on len(dataset).
+    scales well on large set of objects (dataset) because it
+    does not depend on len(dataset) but only on k.
 
     Parameters
     ----------
@@ -112,7 +113,8 @@ def subset_furthest_first(dataset, k, distance, permutation=True, c=2.0):
 
 def compute_subsample_size(n_clusters, c=2.0):
     """Compute a subsample size that takes into account a possible cluster
-    structure of the dataset, in n_clusters.
+    structure of the dataset, in n_clusters, based on a solution of
+    the coupon collector's problem, i.e. k*log(k).
 
     Notes
     -----
@@ -120,12 +122,16 @@ def compute_subsample_size(n_clusters, c=2.0):
     of the Dissimilarity Projection, Proceedings of the 2012
     International Workshop on Pattern Recognition in NeuroImaging
     (PRNI), pp.85,88, 2-4 July 2012 doi:10.1109/PRNI.2012.13
+
     """
     return int(max(1, np.ceil(c * n_clusters * np.log(n_clusters))))
 
 
 
 def compute_subset(dataset, num_landmarks, distance, landmark_policy='sff'):
+    """Wrapper code to dispatch the computation of the subset according to
+    the required policy.
+    """
     if landmark_policy == 'random':
         landmark_idx = np.random.permutation(len(dataset))[:num_landmarks]
     elif landmark_policy in ('fft', 'minmax'):
