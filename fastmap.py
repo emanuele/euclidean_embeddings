@@ -61,7 +61,8 @@ def projection_from_X(X, distance, idx_a, idx_b, Y, eps=1.0e-10):
     return Yj
 
 
-def fastmap(X, distance, k, subsample=False, n_clusters=10, verbose=False):
+def compute_fastmap(X, distance, k, subsample=False, n_clusters=10,
+                    verbose=False):
     """Fastmap algorithm. This is a pretty fast implementation.
     """
     Y = np.zeros([len(X), k])
