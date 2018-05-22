@@ -23,12 +23,13 @@ import numpy as np
 from subsampling import compute_subset
 
 
-def compute_lmds(dataset, distance=None, nl=10, k=4, landmark_policy='random'):
+def compute_lmds(dataset, distance, k, nl=100,
+                 landmark_policy='random'):
     """Given a dataset, computes the lMDS Euclidean embedding of size k
     using nl landmarks. The dataset must be an array.
     """
-    landmarks_idx = compute_subset(dataset, num_landmarks=nl,
-                                   distance=distance,
+    landmarks_idx = compute_subset(dataset, distance,
+                                   num_landmarks=nl,
                                    landmark_policy=landmark_policy)
 
     d = distance(dataset, dataset[landmarks_idx])
