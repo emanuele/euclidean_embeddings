@@ -11,25 +11,23 @@ import numpy as np
 from subsampling import compute_subset
 
 
-def compute_dissimilarity(dataset, num_prototypes=40, distance=None,
+def compute_dissimilarity(dataset, distance, k,
                           prototype_policy='sff', verbose=False):
-    """Compute the dissimilarity (distance) matrix between tracks and
-    prototypes, where prototypes are selected among the tracks with a
-    given policy.
+    """Compute the dissimilarity (distance) matrix between a dataset of N
+    objects and prototypes, where prototypes are selected among the
+    objects with a given policy.
 
     Parameters
     ----------
-    tracks : list or array of objects
-           an iterable of streamlines.
-    num_prototypes : int
-           The number of prototypes. In most cases 40 is enough, which
-           is the default value.
+    dataset : list or array of objects
+           an iterable of objects.
     distance : function
-           Distance function between groups of streamlines. The
-           default is bundles_distances_mam
+           Distance function between groups of objects or sets of objects.
+    k : int
+           The number of prototypes/landmarks.
     prototype_policy : string
-           Shortname for the prototype selection policy. The default
-           value is 'sff', which is highly scalable.
+           The prototype selection policy. The default value is 'sff',
+           which is highly scalable.
     verbose : bool
            If true prints some messages. Deafault is True.
 
@@ -39,16 +37,18 @@ def compute_dissimilarity(dataset, num_prototypes=40, distance=None,
 
     See Also
     --------
-    furthest_first_traversal, subset_furthest_first
+    subsampling.furthest_first_traversal,
+    subsampling.subset_furthest_first
 
     Notes
     -----
+
     """
     if verbose:
         print("Generating %s prototypes with policy %s." % (num_prototypes, prototype_policy))
 
-    prototype_idx = compute_subset(tracks, num_prototypes, distance,
+    prototype_idx = compute_subset(dataset, distance, k,
                                    landmark_policy=prototype_policy)
-    prototypes = [tracks[i] for i in prototype_idx]
-    dissimilarity_matrix = distance(tracks, prototypes)
+    prototypes = [dataset[i] for i in prototype_idx]
+    dissimilarity_matrix = distance(dataset, prototypes)
     return dissimilarity_matrix, prototype_idx
