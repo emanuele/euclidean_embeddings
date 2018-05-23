@@ -26,7 +26,9 @@ from subsampling import compute_subset
 def compute_lmds(dataset, distance, k, nl=100,
                  landmark_policy='random'):
     """Given a dataset, computes the lMDS Euclidean embedding of size k
-    using nl landmarks. The dataset must be an array.
+    using nl landmarks. The dataset must allow advanced indexing. In
+    some cases, less than k dimensions ay be returned, specifically
+    when less than k non negative eigenvalues of Dl are available.
     """
     landmarks_idx = compute_subset(dataset, distance,
                                    num_landmarks=nl,
@@ -46,6 +48,11 @@ def compute_lmds(dataset, distance, k, nl=100,
     Lambda, U = np.linalg.eigh(B)  # eigh() because B (and D) must be symmetric
     U = U.T
     idx = Lambda.argsort()[::-1]
+    k_max = (Lambda > 0.0).sum()
+    if k > k_max:
+        k = k_max
+        print("I cannot obtain more than %s dimensions." % k)
+
     Lambda_plus = Lambda[idx][:k]
     U_plus = U[idx][:k]
 
