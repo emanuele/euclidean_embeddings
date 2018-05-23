@@ -46,7 +46,7 @@ def compute_lmds(dataset, distance, k, nl=100,
     H = np.identity(n) - (1.0 / n) * np.ones((n, n))
     B = -0.5 * H.dot(D).dot(H)
     Lambda, U = np.linalg.eigh(B)  # eigh() because B (and D) must be symmetric
-    U = U.T
+    U = U.T  # U has eigenvectors on columns. We prefer on rows.
     idx = Lambda.argsort()[::-1]
     k_max = (Lambda > 0.0).sum()
     if k > k_max:
