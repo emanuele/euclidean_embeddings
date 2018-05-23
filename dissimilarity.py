@@ -1,12 +1,13 @@
 """Computation of the dissimilarity representation of a dataset of
-objects from a set of prototypes (landmarks( given a distance
-function.
+objects from a set of k prototypes (landmarks), given a distance
+function. The result is a Euclidean embedding of the dataset with k
+dimensions.
 
 See Olivetti E., Nguyen T.B., Garyfallidis, E., The Approximation of
 the Dissimilarity Projection, http://dx.doi.org/10.1109/PRNI.2012.13
+
 """
 
-from __future__ import division
 import numpy as np
 from subsampling import compute_subset
 
