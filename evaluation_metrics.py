@@ -5,10 +5,16 @@ import numpy as np
 from scipy.stats.stats import pearsonr
 
 
-def stress(dist_embedd, dist_original):
+def stress_normalized(dist_embedd, dist_original):
     tmp = dist_embedd / (dist_embedd * dist_embedd).sum() - \
           dist_original / (dist_original * dist_original).sum()
     return (tmp * tmp).sum()
+
+
+def stress(dist_embedd, dist_original):
+    tmp = (dist_embedd - dist_original)
+    tmp *= tmp
+    return tmp.sum() / (dist_original*dist_original).sum()
 
 
 def correlation(dist_embedd, dist_original):
