@@ -68,7 +68,8 @@ def compute_distance_from_reference_sets_fast(dataset, R,
     
 
 def compute_lipschitz(dataset, distance_function, k=None,
-                      linial1994=True, sizeA=None, p=2, k_max=None):
+                      linial1994=True, sizeA=None, p=2, k_max=None,
+                      linial1994_normalize=False):
     """Compute the Lipschitz embedding of a given dataset of objects,
     given its distance_function.
 
@@ -103,7 +104,7 @@ def compute_lipschitz(dataset, distance_function, k=None,
                                                                  R,
                                                                  distance_function)
 
-    if linial1994:
+    if linial1994_normalize:
         dataset_embedded = dataset_embedded / (k ** (1.0 / p))
         
     return dataset_embedded, R
