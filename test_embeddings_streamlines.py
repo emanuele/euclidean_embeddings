@@ -3,6 +3,7 @@
 
 import numpy as np
 from dissimilarity import compute_dissimilarity
+from lipschitz import compute_lipschitz
 from fastmap import compute_fastmap
 from lmds import compute_lmds
 from scipy.spatial import distance_matrix
@@ -18,22 +19,30 @@ def load(filename="data/sub-100307/sub-100307_var-FNAL_tract.trk"):
     data = nib.streamlines.load(filename)
     s = data.streamlines
     print("%s streamlines" % len(s))
-    return s
+    return np.array(s, dtype=np.object)
 
 if __name__ == '__main__':
     print(__doc__)
     np.random.seed(0)
 
     from dipy.tracking.distances import bundles_distances_mam
-    X = np.array(load(), dtype=np.object)
-    idx = np.random.permutation(X.shape[0])[:10000]
+    X = load()
+    idx = np.random.permutation(X.shape[0])[:100000]
     X = X[idx]
-    distance = bundles_distances_mam
-    # distance = partial(parallel_distance_computation, distance=bundles_distances_mam)
+    # distance = bundles_distances_mam
+    distance = partial(parallel_distance_computation, distance=bundles_distances_mam)
     k = 20
     
     print("Estimating the time and quality of embedded distances vs. original distances.")
 
+    print("")
+    print("Lipschitz embedding:")
+    t0 = time()
+    Y_dissimilarity, R = compute_lipschitz(X, distance, k)
+    print("%s sec." % (time() - t0))
+    print_evaluation(X, distance, Y_dissimilarity)
+
+    print("")
     print("Dissimilarity Representation:")
     t0 = time()
     Y_dissimilarity, prototype_idx = compute_dissimilarity(X, distance, k,
