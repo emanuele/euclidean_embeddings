@@ -34,7 +34,7 @@ def compute_dissimilarity(dataset, distance, k,
 
     Return
     ------
-    dissimilarity_matrix : array (N, num_prototypes)
+    dissimilarity_matrix : array (N, k)
 
     See Also
     --------
@@ -46,7 +46,7 @@ def compute_dissimilarity(dataset, distance, k,
 
     """
     if verbose:
-        print("Generating %s prototypes with policy %s." % (num_prototypes, prototype_policy))
+        print("Generating %s prototypes with policy %s." % (k, prototype_policy))
 
     prototype_idx = compute_subset(dataset, distance, k,
                                    landmark_policy=prototype_policy)
