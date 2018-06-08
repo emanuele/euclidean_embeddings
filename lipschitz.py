@@ -107,14 +107,3 @@ def compute_lipschitz(dataset, distance_function, k=None,
         dataset_embedded = dataset_embedded / (k ** (1.0 / p))
         
     return dataset_embedded, R
-
-
-if __name__ == '__main__':
-    np.random.seed(0)
-    dataset = np.array([np.random.uniform(size=20) for i in range(1000)])
-    from distances import euclidean_distance, parallel_distance_computation
-    from functools import partial
-    # distance_function = euclidean_distance
-    distance_function = partial(parallel_distance_computation, distance=euclidean_distance)
-
-    dataset_embedded, R = compute_lipschitz(dataset, distance_function)
