@@ -35,6 +35,7 @@ def compute_dissimilarity(dataset, distance, k,
     Return
     ------
     dissimilarity_matrix : array (N, k)
+    prototype_idx: array(N)
 
     See Also
     --------
