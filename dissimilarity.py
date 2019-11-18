@@ -9,7 +9,7 @@ the Dissimilarity Projection, http://dx.doi.org/10.1109/PRNI.2012.13
 """
 
 import numpy as np
-from subsampling import compute_subset
+from .subsampling import compute_subset
 
 
 def compute_dissimilarity(dataset, distance, k,

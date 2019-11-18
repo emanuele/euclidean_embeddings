@@ -20,7 +20,7 @@ eigenvalues, dimention of embedded space in this case is n' < n
 """
 
 import numpy as np
-from subsampling import compute_subset
+from .subsampling import compute_subset
 
 
 def compute_lmds(dataset, distance, k, nl=100,
@@ -51,7 +51,7 @@ def compute_lmds(dataset, distance, k, nl=100,
     k_max = (Lambda > eps).sum()
     if k > k_max:
         k = k_max
-        print("I cannot obtain more than %s dimensions." % k)
+        print("WARNING: I cannot obtain more than %s dimensions." % k)
 
     Lambda_plus = Lambda[idx][:k]
     U_plus = U[idx][:k]
