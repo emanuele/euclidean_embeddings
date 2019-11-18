@@ -129,7 +129,7 @@ def compute_subsample_size(n_clusters, c=2.0):
 
 
 def compute_subset(dataset, distance, num_landmarks,
-                   landmark_policy='sff'):
+                   landmark_policy='sff', verbose=False):
     """Wrapper code to dispatch the computation of the subset according to
     the required policy.
     """
