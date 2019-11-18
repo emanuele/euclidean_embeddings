@@ -2,13 +2,13 @@
 """
 
 import numpy as np
-from lipschitz import compute_lipschitz
-from dissimilarity import compute_dissimilarity
-from fastmap import compute_fastmap
-from lmds import compute_lmds
+from euclidean_embeddings.lipschitz import compute_lipschitz
+from euclidean_embeddings.dissimilarity import compute_dissimilarity
+from euclidean_embeddings.fastmap import compute_fastmap
+from euclidean_embeddings.lmds import compute_lmds
 from scipy.spatial import distance_matrix
-from evaluation_metrics import stress, correlation, distortion
-from distances import euclidean_distance, parallel_distance_computation
+from euclidean_embeddings.evaluation_metrics import stress, correlation, distortion
+from euclidean_embeddings.distances import euclidean_distance, parallel_distance_computation
 from functools import partial
 from time import time
 
